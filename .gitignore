@@ -1,0 +1,10 @@
+.DS_Store
+*.swp
+.#*
+*~
+**/#*#
+.sass-cache
+.bundle
+node_modules
+bower_components
+vendor/bundle
