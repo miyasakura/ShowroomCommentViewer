@@ -1,0 +1,138 @@
+@import "base.scss";
+
+.head-area {
+  background-color: #37474F;
+  color: white;
+  h2 {
+    font-size: 18px;
+    padding: 10px;
+  }
+}
+
+.input-area {
+  clear:right;
+
+  p#message {
+    color:red;
+  }  
+}
+
+.option-area {
+  width:100%;
+  text-align:right;
+  button{
+    width:40px;
+  }
+  .search{
+    width:100%;
+  }
+  .comment-count{
+    width:100%;
+  }
+}
+
+.comment-area {
+  table{
+    text-align:left;
+    font-size: 13px;
+    width: 100%;
+    margin-bottom: 24px;
+    .user-column{
+      width: 180px;
+    }
+    .date-column{
+      width: 160px;
+    }
+    .gift-num{
+      vertical-align: super;
+    }
+
+    thead{
+      background-color: #ECEFF1;
+    }
+  
+    tbody{
+      vertical-align: top;
+      td{
+        padding:4px 0 4px 0;
+      }
+    }
+  }
+  img {
+    &.gift {
+      width: 30px;
+      height: 30px;
+    }
+    &.avatar {
+      float:left;
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+.setting-button {
+  float: right;
+  height: 51px;
+  line-height: 51px;
+
+  #setting-open {
+    background-color: #ffffff;
+    color: #414141;
+    text-decoration: none;
+    margin: 0 8px 0 0;
+    padding: 4px 8px 4px 8px;
+    -webkit-border-radius: 2px;
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.7);
+  }
+}
+
+#setting {
+  width: 404px;
+  padding: 8px 16px 8px 16px;
+  background: #FFF;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.7);
+  display: none;
+
+  .modal-close {
+    margin: 8px 0;
+    text-align:center;
+    -webkit-border-radius: 2px;
+  }
+
+  .setting-title {
+    text-align:left;
+    font-weight: 800;
+    font-size: 14px;
+    margin: 4px 0;
+  }
+
+  #showComment {
+    margin: 8px 0;
+  }
+  #showCountComment {
+    margin: 8px 0;
+  }
+  #showSPGift {
+    margin: 8px 0;
+  }
+  #showPaidGift {
+    margin: 8px 0;
+  }
+  #showFreeGift {
+    margin: 8px 0;
+  }
+}
+
+#lean_overlay {
+  position: fixed;
+  z-index: 10000;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+  background: #000;
+  display: none;
+}
+

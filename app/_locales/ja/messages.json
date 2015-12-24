@@ -1,0 +1,99 @@
+{
+  "appName": {
+    "message": "SHOWROOMコメント&ギフトビューア",
+    "description": "アプリ名"
+  },
+  "appDescription": {
+    "message": "仮想ライブ空間 SHOWROOM (ショールーム) のコメントやギフトのログを表示します。",
+    "description": ""
+  },
+  "pageNotFound": {
+    "message": "ページがみつかりません",
+    "description": ""
+  },
+  "liveEnded": {
+    "message": "ライブが終了しています",
+    "description": ""
+  },
+  "pageReadError": {
+    "message": "読み込みエラーが発生しました。再度実行して解決しない場合は、@miyasakura_までご一報ください。",
+    "description": ""
+  },
+  "connect": {
+    "message": "接続",
+    "description": ""
+  },
+  "inputUrl": {
+    "message": "URLを入力してください。",
+    "description": ""
+  },
+  "titleLabel": {
+    "message": "SHOWROOMコメント&ギフトビューア",
+    "description": ""
+  },
+  "howToLabel": {
+    "message": "下記にURLを入力して接続を押すと、SHOWROOMのコメントを表示できます。",
+    "description": ""
+  },
+  "connectButton": {
+    "message": "接続",
+    "description": ""
+  },
+  "searchLabel": {
+    "message": "検索",
+    "description": ""
+  },
+  "numOfCommentLabel": {
+    "message": "コメント数: ",
+    "description": ""
+  },
+  "userLabel": {
+    "message": "ユーザー",
+    "description": ""
+  },
+  "dateLabel": {
+    "message": "時刻",
+    "description": ""
+  },
+  "logLabel": {
+    "message": "ログ",
+    "description": ""
+  },
+  "settingTitleLabel": {
+    "message": "表示項目の設定",
+    "description": ""
+  },
+  "showComment": {
+    "message": "コメント",
+    "description": ""
+  },
+  "showCountComment": {
+    "message": "カウントコメント",
+    "description": ""
+  },
+  "showSPGift": {
+    "message": "SPギフト",
+    "description": ""
+  },
+  "showPaidGift": {
+    "message": "有料ギフト",
+    "description": ""
+  },
+  "showFreeGift": {
+    "message": "無料ギフト",
+    "description": ""
+  },
+  "settingOpen": {
+    "message": "設定",
+    "description": ""
+  },
+  "disconnect": {
+    "message": "切断",
+    "description": ""
+  },
+  "closeLabel": {
+    "message": "閉じる",
+    "description": ""
+  }
+}
+

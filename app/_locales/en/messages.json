@@ -1,0 +1,99 @@
+{
+  "appName": {
+    "message": "SHOWROOM Comments & Gifts Viewer",
+    "description": "アプリ名"
+  },
+  "appDescription": {
+    "message": "SHOWROOM Comments & Gifts Viewer displays comments and giftings in SHOWROOM live broadcasting.",
+    "description": ""
+  },
+  "pageNotFound": {
+    "message": "Page not found.",
+    "description": ""
+  },
+  "liveEnded": {
+    "message": "Live is not started.",
+    "description": ""
+  },
+  "pageReadError": {
+    "message": "Error while reading a page. Try later.",
+    "description": ""
+  },
+  "connect": {
+    "message": "Connect",
+    "description": ""
+  },
+  "inputUrl": {
+    "message": "Input URL.",
+    "description": ""
+  },
+  "titleLabel": {
+    "message": "SHOWROOM Comments & Gifts Log Viewer",
+    "description": ""
+  },
+  "howToLabel": {
+    "message": "Please input URL below.",
+    "description": ""
+  },
+  "connectButton": {
+    "message": "Connect",
+    "description": ""
+  },
+  "searchLabel": {
+    "message": "Search",
+    "description": ""
+  },
+  "numOfCommentLabel": {
+    "message": "Number of comments: ",
+    "description": ""
+  },
+  "userLabel": {
+    "message": "User",
+    "description": ""
+  },
+  "dateLabel": {
+    "message": "Time",
+    "description": ""
+  },
+  "logLabel": {
+    "message": "Log",
+    "description": ""
+  },
+  "settingTitleLabel": {
+    "message": "Settings",
+    "description": ""
+  },
+  "showComment": {
+    "message": "Comments",
+    "description": ""
+  },
+  "showCountComment": {
+    "message": "Number Counting Comments",
+    "description": ""
+  },
+  "showSPGift": {
+    "message": "Special gifts",
+    "description": ""
+  },
+  "showPaidGift": {
+    "message": "Paid gifts",
+    "description": ""
+  },
+  "showFreeGift": {
+    "message": "Free gifts",
+    "description": ""
+  },
+  "settingOpen": {
+    "message": "Settings",
+    "description": ""
+  },
+  "disconnect": {
+    "message": "Disonnect",
+    "description": ""
+  },
+  "closeLabel": {
+    "message": "Close",
+    "description": ""
+  }
+}
+
