@@ -4,7 +4,6 @@
   "description": "Showroom Comment Viewer",
   "main": "gulpfile.coffee",
   "scripts": {
-    "bower": "bower install",
     "build": "gulp",
     "watch": "gulp watch"
   },

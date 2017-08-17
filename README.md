@@ -19,7 +19,6 @@ SHOWROOM Comments & Gifts Viewer displays comments and giftings in SHOWROOM live
 ```
 bundle instal --path=vendor/bundle
 npm install
-npm run bower
 ```
 
 ### 2. Edit sources

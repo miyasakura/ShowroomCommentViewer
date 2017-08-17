@@ -72,31 +72,30 @@ clear = ->
   allData = []
 
 readData = (data) ->
-  if data.match(/SrGlobal\.roomId *= *([0-9]+)/)
-    roomId = parseInt(RegExp.$1)
-  else
-    showMessage(l("pageNotFound"))
-    return false
-  if data.match(/SrGlobal\.liveId *= *([0-9]+)/)
-    liveId = parseInt(RegExp.$1)
-  if !liveId || liveId == 0
+  parser=new DOMParser();
+  htmlDoc=parser.parseFromString(data, "text/html")
+
+  if !htmlDoc.getElementById("js-live-data")
     showMessage(l("liveEnded"))
-    return false
-  if data.match(/"bcsvr_key"\s*:\s*"([^"]+)"/)
-    bcsvrKey = RegExp.$1
-  else
-    showMessage(l("pageReadError"))
-    return false
-  if data.match(/"broadcast_host"\s*:\s*"([^"]+)"/)
-    broadcastHost = RegExp.$1
-  else
-    showMessage(l("pageReadError"))
-    return false
-  if data.match(/"broadcast_port"\s*:\s*([0-9]+),/)
-    broadcastPort = parseInt(RegExp.$1)
-  else
-    showMessage(l("pageReadError"))
-    return false
+    return
+
+  json = JSON.parse(htmlDoc.getElementById("js-live-data").getAttribute("data-json"))
+
+  # room_id
+  roomId = parseInt(json.room_id)
+
+  # live_id
+  liveId = parseInt(json.live_id)
+
+  # bcsvrKey
+  bcsvrKey = json.broadcast_key
+
+  # host
+  broadcastHost = json.broadcast_host
+
+  # port
+  broadcastPort = json.broadcast_port
+
   return true
 
 start = ->
