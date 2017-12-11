@@ -1,0 +1,135 @@
+@charset "UTF-8";
+html {
+  font-family: sans-serif; }
+
+body {
+  overflow-y: visible;
+  -webkit-user-select: text;
+  font-family: Verdana,Roboto,"Droid Sans","游ゴシック Light",YuGothic,"ヒラギノ角ゴ ProN W3","Hiragino Kaku Gothic ProN","メイリオ",Meiryo,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #414141;
+  line-height: 1.5;
+  background-color: #fff;
+  min-height: 100%;
+  height: 100%; }
+
+input[type=text] {
+  height: 26px;
+  font-size: 15px; }
+  input[type=text][disabled] {
+    background: #efefef; }
+
+button {
+  border: solid 0;
+  background-color: #3bddb5;
+  color: #fff;
+  padding: 2px 6px 2px;
+  font-size: 13px; }
+  button.gray {
+    background: #b4b4b4;
+    color: #ffffff; }
+  button #searchButton {
+    width: 40px; }
+
+mt-b {
+  margin-top: 4px; }
+
+.head-area {
+  background-color: #37474F;
+  color: white; }
+  .head-area h2 {
+    font-size: 18px;
+    padding: 10px; }
+
+.input-area {
+  clear: right; }
+  .input-area p#message {
+    color: red; }
+
+.option-area {
+  width: 100%;
+  text-align: right; }
+  .option-area button {
+    width: 40px; }
+  .option-area .search {
+    width: 100%; }
+  .option-area .comment-count {
+    width: 100%; }
+
+.comment-area table {
+  text-align: left;
+  font-size: 13px;
+  width: 100%;
+  margin-bottom: 24px; }
+  .comment-area table .user-column {
+    width: 180px; }
+  .comment-area table .date-column {
+    width: 160px; }
+  .comment-area table .gift-num {
+    vertical-align: super; }
+  .comment-area table thead {
+    background-color: #ECEFF1; }
+  .comment-area table tbody {
+    vertical-align: top; }
+    .comment-area table tbody td {
+      padding: 4px 0 4px 0; }
+.comment-area img.gift {
+  width: 30px;
+  height: 30px; }
+.comment-area img.avatar {
+  float: left;
+  width: 40px;
+  height: 40px; }
+
+.setting-button {
+  float: right;
+  height: 51px;
+  line-height: 51px; }
+  .setting-button #setting-open {
+    background-color: #ffffff;
+    color: #414141;
+    text-decoration: none;
+    margin: 0 8px 0 0;
+    padding: 4px 8px 4px 8px;
+    -webkit-border-radius: 2px;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.7); }
+
+#setting {
+  width: 404px;
+  padding: 8px 16px 8px 16px;
+  background: #FFF;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
+  display: none; }
+  #setting .modal-close {
+    margin: 8px 0;
+    text-align: center;
+    -webkit-border-radius: 2px; }
+  #setting .setting-title {
+    text-align: left;
+    font-weight: 800;
+    font-size: 14px;
+    margin: 4px 0; }
+  #setting #showComment {
+    margin: 8px 0; }
+  #setting #showCountComment {
+    margin: 8px 0; }
+  #setting #showSPGift {
+    margin: 8px 0; }
+  #setting #showPaidGift {
+    margin: 8px 0; }
+  #setting #showFreeGift {
+    margin: 8px 0; }
+
+#lean_overlay {
+  position: fixed;
+  z-index: 10000;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  display: none; }
+
+/*# sourceMappingURL=main.css.map */

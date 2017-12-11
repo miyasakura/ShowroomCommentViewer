@@ -1,4 +1,4 @@
-server = "https://www.showroom-live.com"
+server = "https://xlv7zi96k3.execute-api.ap-northeast-1.amazonaws.com/prod/"
 
 roomId = 0
 liveId = 0
@@ -6,7 +6,7 @@ bcsvrKey = ""
 broadcastHost = ""
 broadcastPort = 0
 connected = false
-tcpClient = null
+ws = null
 ping = null
 processing = false
 qs = null
@@ -28,28 +28,6 @@ showSPGift = false
 showPaidGift = false
 showFreeGift = false
 
-l = (str) ->
- chrome.i18n.getMessage(str)
-
-localize = ->
-  $("#titleLabel").html(l("titleLabel"))
-  $("#howToLabel").html(l("howToLabel"))
-  $("#connectButton").html(l("connectButton"))
-  $("#searchLabel").html(l("searchLabel"))
-  $("#numOfCommentLabel").html(l("numOfCommentLabel"))
-  $("#userLabel").html(l("userLabel"))
-  $("#userLabel").html(l("userLabel"))
-  $("#dateLabel").html(l("dateLabel"))
-  $("#logLabel").html(l("logLabel"))
-  $("#settingTitleLabel").html(l("settingTitleLabel"))
-  $("#showCommentLabel").html(l("showComment"))
-  $("#showCountCommentLabel").html(l("showCountComment"))
-  $("#showSPGiftLabel").html(l("showSPGift"))
-  $("#showPaidGiftLabel").html(l("showPaidGift"))
-  $("#showFreeGiftLabel").html(l("showFreeGift"))
-  $("#setting-open").html(l("settingOpen"))
-  $("#closeLabel").html(l("closeLabel"))
-
 clearMessage = ->
   $("#message").html("")
   count = 0
@@ -61,7 +39,7 @@ urlKey = ->
   return $("#room_url").val()
 
 getUrl = ->
-  server + "/" + urlKey()
+  server + urlKey()
 
 clear = ->
   roomId = 0
@@ -76,7 +54,7 @@ readData = (data) ->
   htmlDoc=parser.parseFromString(data, "text/html")
 
   if !htmlDoc.getElementById("js-live-data")
-    showMessage(l("liveEnded"))
+    showMessage("ライブが終了しています")
     return
 
   json = JSON.parse(htmlDoc.getElementById("js-live-data").getAttribute("data-json"))
@@ -101,6 +79,7 @@ readData = (data) ->
 start = ->
   clearMessage()
   url = getUrl()
+
   $.ajax({
     type: "GET",
     url: url,
@@ -113,17 +92,18 @@ start = ->
       connect()
     error: (XMLHttpRequest, textStatus, errorThrown) ->
       processing = false
-      showMessage(l("pageNotFound"))
+
+      showMessage("ページがみつかりません")
   })
 
 disconnect = ->
-  if tcpClient != null
-    tcpClient.sendMessage("QUIT")
-    tcpClient.disconnect()
-    tcpClient = null
+  if ws != null
+    ws.send("QUIT")
+    ws.close()
+    ws = null
     clearInterval(ping)
   connected = false
-  $("#connectButton").html(l("connect"))
+  $("#connectButton").html("接続")
   $("#connectButton").removeClass("gray")
   $("#room_url").prop("disabled", false)
 
@@ -133,7 +113,7 @@ onButtonClicked = ->
     processing = false
   else
     if urlKey() == ""
-      showMessage(l("inputUrl"))
+      showMessage("URLを入力してください。")
       processing = false
       return
     start()
@@ -141,30 +121,28 @@ onButtonClicked = ->
 connect = ->
   clearComment()
   allData = []
-  if tcpClient
+  if ws
     disconnect()
 
-  tcpClient = new TcpClient(broadcastHost, broadcastPort)
-  tcpClient._onReceive = onReceive
-  tcpClient.connect( ->
-    tcpClient.sendMessage("SUB\t" + bcsvrKey)
+  ws = new WebSocket('ws://' + broadcastHost + ':' + broadcastPort);
+  ws.onopen = ->
+    ws.send("SUB\t" + bcsvrKey)
+    ws.onmessage = onReceive
     connected = true
-    $("#connectButton").html(l("disconnect"))
+    $("#connectButton").html("切断")
     $("#connectButton").addClass("gray")
     $("#room_url").prop("disabled", true)
-  )
   ping = setInterval(->
-    if tcpClient and tcpClient.isConnected
-      tcpClient.sendMessage("PING")
+    if ws and ws.readyState == ws.OPEN
+      ws.send("PING")
     else
       disconnect()
   , 30000);
 
-onReceive = (receiveInfo) ->
-  dataView = new DataView(receiveInfo.data)
-  decoder = new TextDecoder('utf-8')
-  message = decoder.decode(dataView)
-  splited = message.split("\t")
+onReceive = (message) ->
+  if !message.isTrusted
+    return
+  splited = message.data.split("\t")
   if splited.length < 2 || splited[0] != 'MSG'
     return
   jsonStr = splited[2]
@@ -200,7 +178,7 @@ addComment = (data) ->
   row = "
   <tr>
     <td class='user-column'>
-      <img class='avatar' id='user-img-#{id}' src='/img/loading.png'>
+      <img class='avatar' id='user-img-#{id}' src='https://image.showroom-live.com/showroom-prod/image/avatar/#{avatar}.png'>
       #{name}
     </td>
     <td class='date-column'>#{data['time']}</td>
@@ -208,17 +186,6 @@ addComment = (data) ->
   </tr>
   "
   $("#main-tbody").prepend(row)
-  if avatarCache[avatar]
-    $("#user-img-#{id}").attr("src", avatarCache[avatar])
-  else
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', "https://image.showroom-live.com/showroom-prod/image/avatar/#{avatar}.png", true);
-    xhr.responseType = 'blob';
-    xhr.onload = (e) ->
-      res = window.URL.createObjectURL(this.response)
-      avatarCache[avatar] = res
-      $("#user-img-#{id}").attr("src", res)
-    xhr.send();
 
 addGift = (data) ->
   gift = data["json"]["g"]
@@ -241,39 +208,17 @@ addGift = (data) ->
   row = "
   <tr>
     <td class='user-column'>
-      <img class='avatar' id='user-img-#{id}' src='/img/loading.png'>
+      <img class='avatar' id='user-img-#{id}' src='https://image.showroom-live.com/showroom-prod/image/avatar/#{avatar}.png'>
       #{name}
     </td>
     <td class='date-column'>#{data['time']}</td>
     <td>
-      <img class='gift' id='gift-img-#{id}' src='/img/loading.png'>
+      <img class='gift' id='gift-img-#{id}' src='https://image.showroom-live.com/showroom-prod/assets/img/gift/#{gift}_s.png'>
       <span class='gift-num'>x#{num}</span>
     </td>
   </tr>
   "
   $("#main-tbody").prepend(row)
-  if avatarCache[avatar]
-    $("#user-img-#{id}").attr("src", avatarCache[avatar])
-  else
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', "https://image.showroom-live.com/showroom-prod/image/avatar/#{avatar}.png", true);
-    xhr.responseType = 'blob';
-    xhr.onload = (e) ->
-      res = window.URL.createObjectURL(this.response)
-      avatarCache[avatar] = res
-      $("#user-img-#{id}").attr("src", res)
-    xhr.send();
-  if giftCache[gift]
-    $("#gift-img-#{id}").attr("src", giftCache[gift])
-  else
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', "https://image.showroom-live.com/showroom-prod/assets/img/gift/#{gift}_s.png", true);
-    xhr.responseType = 'blob';
-    xhr.onload = (e) ->
-      res = window.URL.createObjectURL(this.response)
-      giftCache[gift] = res
-      $("#gift-img-#{id}").attr("src", res)
-    xhr.send();
 
 clearComment = ->
   $("#main-tbody").html("")
@@ -306,25 +251,32 @@ endSearch =  ->
   qs.search("")
 
 loadSetting = ->
-  chrome.storage.sync.get([keyComment, keyCountComment, keySPGift, keyPaidGift, keyFreeGift], (items) ->
-    if items[keyComment] == undefined
-      items[keyComment] = true
-    if items[keyComment] == true
-      showComment = true
-      $("#showComment").prop("checked", true)
-    if items[keyCountComment] == true
-      showCountComment = true
-      $("#showCountComment").prop("checked", true)
-    if items[keySPGift] == true
-      showSPGift = true
-      $("#showSPGift").prop("checked", true)
-    if items[keyPaidGift] == true
-      showPaidGift = true
-      $("#showPaidGift").prop("checked", true)
-    if items[keyFreeGift] == true
-      showFreeGift = true
-      $("#showFreeGift").prop("checked", true)
-  )
+  items = {}
+  items[keyComment] = localStorage.getItem(keyComment)
+  items[keyCountComment] = localStorage.getItem(keyCountComment)
+  items[keySPGift] = localStorage.getItem(keySPGift)
+  items[keyFreeGift] = localStorage.getItem(keyFreeGift)
+  if !items[keyComment]
+    items[keyComment] = "true"
+  if items[keyComment] == "true"
+    showComment = true
+    $("#showComment").prop("checked", true)
+
+  if items[keyCountComment] == "true"
+    showCountComment = true
+    $("#showCountComment").prop("checked", true)
+
+  if items[keySPGift] == "true"
+    showSPGift = true
+    $("#showSPGift").prop("checked", true)
+
+  if items[keyPaidGift] == "true"
+    showPaidGift = true
+    $("#showPaidGift").prop("checked", true)
+
+  if items[keyFreeGift] == "true"
+    showFreeGift = true
+    $("#showFreeGift").prop("checked", true)
 
 saveSetting = ->
   showComment = $("#showComment").prop("checked")
@@ -333,14 +285,11 @@ saveSetting = ->
   showPaidGift = $("#showPaidGift").prop("checked")
   showFreeGift = $("#showFreeGift").prop("checked")
 
-  items = {}
-  items[keyComment] = showComment
-  items[keyCountComment] = showCountComment
-  items[keySPGift] = showSPGift
-  items[keyPaidGift] = showPaidGift
-  items[keyFreeGift] = showFreeGift
-
-  chrome.storage.sync.set(items)
+  localStorage.setItem(keyComment, showComment)
+  localStorage.setItem(keyCountComment, showCountComment)
+  localStorage.setItem(keySPGift, showSPGift)
+  localStorage.setItem(keyPaidGift, showPaidGift)
+  localStorage.setItem(keyFreeGift, showFreeGift)
 
 giftSettingChanged = ->
   saveSetting()
@@ -354,7 +303,6 @@ giftSettingChanged = ->
     qs.cache()
 
 $ ->
-  localize()
   $("#connectButton").click ->
     if processing
       return false
@@ -371,4 +319,3 @@ $ ->
 error = (msg) ->
   showMessage(msg)
   disconnect
-
