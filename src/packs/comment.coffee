@@ -266,10 +266,14 @@ loadSetting = ->
     showCountComment = true
     $("#showCountComment").prop("checked", true)
 
+  if !items[keySPGift]
+    items[keySPGift] = "true"
   if items[keySPGift] == "true"
     showSPGift = true
     $("#showSPGift").prop("checked", true)
 
+  if !items[keyPaidGift]
+    items[keyPaidGift] = "true"
   if items[keyPaidGift] == "true"
     showPaidGift = true
     $("#showPaidGift").prop("checked", true)
