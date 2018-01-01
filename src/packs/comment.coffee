@@ -124,7 +124,7 @@ connect = ->
   if ws
     disconnect()
 
-  ws = new WebSocket('ws://' + broadcastHost + ':' + broadcastPort);
+  ws = new WebSocket('wss://' + broadcastHost + ':' + broadcastPort);
   ws.onopen = ->
     ws.send("SUB\t" + bcsvrKey)
     ws.onmessage = onReceive
