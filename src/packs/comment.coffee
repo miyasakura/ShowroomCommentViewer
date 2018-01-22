@@ -22,12 +22,25 @@ keyCountComment = "setting.count"
 keySPGift = "setting.spgift"
 keyPaidGift = "setting.paidgift"
 keyFreeGift = "setting.freegift"
+keyVoice = "setting.voice"
 showComment = false
 showCountComment = false
 showSPGift = false
 showPaidGift = false
 showFreeGift = false
+playVoice = false
 
+ranges = [
+  '\ud83c[\udf00-\udfff]',
+  '\ud83d[\udc00-\ude4f]',
+  '\ud83d[\ude80-\udeff]',
+  '\ud7c9[\ude00-\udeff]',
+  '[\u2600-\u27BF]',
+  '["#$&()\*\/:;<=>@\[\\\]^_`{|}~]',
+  '[　”＃’（）＊．／：；＜＞＠［￥］＾＿‘｛｜｝￣・゛゜´｀¨ヽヾゝゞ〃〇―‐＼～〜∥…‥“〔〕〈〉《》「」『』【】±×÷≠≦≧∞∴♂♀°′″℃￠￡§☆★○●◎◇◇◆□■△▲▽▼※〒→←↑↓〓]'
+]
+kigou_ex = new RegExp(ranges.join('|'), 'g')
+www_ex = new RegExp('[wWｗＷ][wWｗＷ][wWｗＷ]+', 'g')
 clearMessage = ->
   $("#message").html("")
   count = 0
@@ -186,6 +199,19 @@ addComment = (data) ->
   </tr>
   "
   $("#main-tbody").prepend(row)
+  if !'SpeechSynthesisUtterance' in window
+    return
+
+  if !playVoice
+    return
+
+  msg = new SpeechSynthesisUtterance()
+  msg.volume = 1
+  msg.rate = 1
+  msg.pitch = 1.2
+  msg.text = "#{name.replace(kigou_ex, ' ').substr(0,4)}さん。#{comment.replace(kigou_ex,' ').replace(www_ex, 'www')}"
+  msg.lang = "ja-UP"
+  speechSynthesis.speak(msg)
 
 addGift = (data) ->
   gift = data["json"]["g"]
@@ -256,6 +282,8 @@ loadSetting = ->
   items[keyCountComment] = localStorage.getItem(keyCountComment)
   items[keySPGift] = localStorage.getItem(keySPGift)
   items[keyFreeGift] = localStorage.getItem(keyFreeGift)
+  items[keyPaidGift] = localStorage.getItem(keyPaidGift)
+  items[keyVoice] = localStorage.getItem(keyVoice)
   if !items[keyComment]
     items[keyComment] = "true"
   if items[keyComment] == "true"
@@ -282,18 +310,24 @@ loadSetting = ->
     showFreeGift = true
     $("#showFreeGift").prop("checked", true)
 
+  if items[keyVoice] == "true"
+    playVoice = true
+    $("#playVoice").prop("checked", true)
+
 saveSetting = ->
   showComment = $("#showComment").prop("checked")
   showCountComment = $("#showCountComment").prop("checked")
   showSPGift = $("#showSPGift").prop("checked")
   showPaidGift = $("#showPaidGift").prop("checked")
   showFreeGift = $("#showFreeGift").prop("checked")
+  playVoice = $("#playVoice").prop("checked")
 
   localStorage.setItem(keyComment, showComment)
   localStorage.setItem(keyCountComment, showCountComment)
   localStorage.setItem(keySPGift, showSPGift)
   localStorage.setItem(keyPaidGift, showPaidGift)
   localStorage.setItem(keyFreeGift, showFreeGift)
+  localStorage.setItem(keyVoice, playVoice)
 
 giftSettingChanged = ->
   saveSetting()
