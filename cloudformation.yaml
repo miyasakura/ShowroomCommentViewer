@@ -3,11 +3,9 @@ Description: ''
 Mappings:
   EnvMap:
     prod:
-      CertificateArn: arn:aws:acm:us-east-1:066782833234:certificate/00e57f1e-b8b4-48ec-aceb-c16dfca2d2e2
       HostedZoneName: sacra.co.
       RecordSetName: sr-viewer.sacra.co.
-      DomainName: sr-viewer.sacra.co
-      BucketName: sr-comment-and-gift-viewer
+      BucketName: sr-viewer.sacra.co
 Resources:
   DNS:
     Type: AWS::Route53::RecordSetGroup
@@ -17,8 +15,8 @@ Resources:
       - Name: !FindInMap [EnvMap, prod, RecordSetName]
         Type: A
         AliasTarget:
-          HostedZoneId: Z2FDTNDATAQYW2
-          DNSName: !GetAtt CloudFront.DomainName
+          HostedZoneId: Z2M4EHUR26P7ZW
+          DNSName: s3-website-ap-northeast-1.amazonaws.com
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -40,41 +38,3 @@ Resources:
           Resource:
           - !Join ["", ["arn:aws:s3:::", !Ref S3Bucket, "/*"]]
           Principal: "*"
-  CloudFront:
-    Type: AWS::CloudFront::Distribution
-    Properties:
-      DistributionConfig:
-        Aliases:
-        - !FindInMap [EnvMap, prod, DomainName]
-        Enabled: true
-        DefaultRootObject: index.html
-        PriceClass: PriceClass_All
-        DefaultCacheBehavior:
-          TargetOriginId: S3-origin
-          ViewerProtocolPolicy: redirect-to-https
-          MaxTTL: 86400
-          MinTTL: 86400
-          DefaultTTL: 86400
-          AllowedMethods:
-          - HEAD
-          - GET
-          CachedMethods:
-          - HEAD
-          - GET
-          ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: none
-        Origins:
-        - Id: S3-origin
-          DomainName: !Join ["", [!FindInMap [EnvMap, prod, BucketName], ".s3.amazonaws.com"]]
-          CustomOriginConfig:
-            OriginProtocolPolicy: match-viewer
-        Restrictions:
-          GeoRestriction:
-            RestrictionType: none
-            Locations: []
-        ViewerCertificate:
-          SslSupportMethod: sni-only
-          MinimumProtocolVersion: TLSv1
-          AcmCertificateArn: !FindInMap [EnvMap, prod, CertificateArn]
