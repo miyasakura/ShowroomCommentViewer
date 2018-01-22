@@ -37,7 +37,7 @@ ranges = [
   '\ud7c9[\ude00-\udeff]',
   '[\u2600-\u27BF]',
   '["#$&()\*\/:;<=>@\[\\\]^_`{|}~]',
-  '[　”＃’（）＊．／：；＜＞＠［￥］＾＿‘｛｜｝￣・゛゜´｀¨ヽヾゝゞ〃〇―‐＼～〜∥…‥“〔〕〈〉《》「」『』【】±×÷≠≦≧∞∴♂♀°′″℃￠￡§☆★○●◎◇◇◆□■△▲▽▼※〒→←↑↓〓]'
+  '[　”＃’（）＊．／：；＜＞＠［￥］＾＿‘｛｜｝￣・゛゜´｀¨ヽヾゝゞ〃〇―‐＼∥‥“〔〕〈〉《》「」『』【】±×÷≠≦≧∞∴♂♀°′″℃￠￡§☆★○●◎◇◇◆□■△▲▽▼※〒→←↑↓〓]'
 ]
 kigou_ex = new RegExp(ranges.join('|'), 'g')
 www_ex = new RegExp('[wWｗＷ][wWｗＷ][wWｗＷ]+', 'g')
@@ -206,7 +206,7 @@ addComment = (data) ->
     return
 
   msg = new SpeechSynthesisUtterance()
-  msg.volume = 1
+  msg.volume = 0.3
   msg.rate = 1
   msg.pitch = 1.2
   msg.text = "#{name.replace(kigou_ex, ' ').substr(0,4)}さん。#{comment.replace(kigou_ex,' ').replace(www_ex, 'www')}"
