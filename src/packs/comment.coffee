@@ -209,7 +209,7 @@ addComment = (data) ->
   msg.volume = 0.3
   msg.rate = 1
   msg.pitch = 1.2
-  msg.text = "#{name.replace(kigou_ex, ' ').substr(0,4)}さん。#{comment.replace(kigou_ex,' ').replace(www_ex, 'www')}"
+  msg.text = "#{name.replace(kigou_ex, ' ').substr(0,5)}さん。#{comment.replace(kigou_ex,' ').replace(www_ex, 'www')}"
   msg.lang = "ja-UP"
   speechSynthesis.speak(msg)
 
