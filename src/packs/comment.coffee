@@ -1,4 +1,4 @@
-server = "https://xlv7zi96k3.execute-api.ap-northeast-1.amazonaws.com/prod/"
+server = "https://6uqm5v4due.execute-api.ap-northeast-1.amazonaws.com/prod/"
 
 roomId = 0
 liveId = 0
@@ -63,14 +63,10 @@ clear = ->
   allData = []
 
 readData = (data) ->
-  parser=new DOMParser();
-  htmlDoc=parser.parseFromString(data, "text/html")
-
-  if !htmlDoc.getElementById("js-live-data")
+  json = JSON.parse(data)
+  if json.live_status != 2
     showMessage("ライブが終了しています")
     return
-
-  json = JSON.parse(htmlDoc.getElementById("js-live-data").getAttribute("data-json"))
 
   # room_id
   roomId = parseInt(json.room_id)
@@ -191,7 +187,7 @@ addComment = (data) ->
   row = "
   <tr>
     <td class='user-column'>
-      <img class='avatar' id='user-img-#{id}' src='https://image.showroom-live.com/showroom-prod/image/avatar/#{avatar}.png'>
+      <img class='avatar' id='user-img-#{id}' src='https://image.showroom-cdn.com/showroom-prod/image/avatar/#{avatar}.png'>
       #{name}
     </td>
     <td class='date-column'>#{data['time']}</td>
@@ -234,12 +230,12 @@ addGift = (data) ->
   row = "
   <tr>
     <td class='user-column'>
-      <img class='avatar' id='user-img-#{id}' src='https://image.showroom-live.com/showroom-prod/image/avatar/#{avatar}.png'>
+      <img class='avatar' id='user-img-#{id}' src='https://image.showroom-cdn.com/showroom-prod/image/avatar/#{avatar}.png'>
       #{name}
     </td>
     <td class='date-column'>#{data['time']}</td>
     <td>
-      <img class='gift' id='gift-img-#{id}' src='https://image.showroom-live.com/showroom-prod/assets/img/gift/#{gift}_s.png'>
+      <img class='gift' id='gift-img-#{id}' src='https://image.showroom-cdn.com/showroom-prod/assets/img/gift/#{gift}_s.png'>
       <span class='gift-num'>x#{num}</span>
     </td>
   </tr>

@@ -1,22 +1,35 @@
 const path = require('path')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
     // エントリーポイントの設定
     entry: './src/packs/app.js',
     module: {
-        loaders: [
+        rules: [
+            {
+                loader: "babel-loader",
+                options: {
+                    presets: [
+                       "minify",
+                       [
+                           "@babel/preset-env",
+                           {
+                               modules: false
+                           }
+                        ]
+                    ]
+                },
+            },
             {
                 test: /\.coffee$/,
-                loader: 'babel-loader!coffee-loader'
+                use: ['babel-loader', 'coffee-loader']
             },
             {
                 test: /\.css$/,
-                loader: 'css-loader'
+                use: ['css-loader']
             },
             {
                 test: /\.scss$/,
-                loaders: [
+                use: [
                     'style-loader',
                     {
                         loader: 'css-loader',
@@ -25,10 +38,10 @@ module.exports = {
                     'sass-loader'
                 ]
             }
+ 
         ]
     },
     plugins: [
-        new UglifyJSPlugin()
     ],
     // 出力の設定
     output: {
