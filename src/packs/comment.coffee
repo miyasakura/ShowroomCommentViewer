@@ -235,7 +235,7 @@ addGift = (data) ->
     </td>
     <td class='date-column'>#{data['time']}</td>
     <td>
-      <img class='gift' id='gift-img-#{id}' src='https://image.showroom-cdn.com/showroom-prod/assets/img/gift/#{gift}_s.png'>
+      <img class='gift' id='gift-img-#{id}' src='https://static.showroom-live.com/image/gift/#{gift}_s.png'>
       <span class='gift-num'>x#{num}</span>
     </td>
   </tr>
